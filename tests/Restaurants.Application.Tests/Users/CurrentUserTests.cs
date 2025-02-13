@@ -1,0 +1,99 @@
+﻿using FluentAssertions;
+using Restaurants.Domain.Constants;
+using Xunit;
+
+namespace Restaurants.Application.Users.Tests;
+
+public class CurrentUserTests
+{
+    // TestMethod_Scenario_ExpectResult
+    [Theory()]
+    [InlineData(UserRoles.Admin)]
+    [InlineData(UserRoles.User)]
+    public void IsInRole_WithMatchingRole_ShouldReturnTrue(string roleName)
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin, UserRoles.User], null, null);
+
+        // act
+
+        var isInRole = currentUser.IsInRole(roleName);
+
+        // assert
+
+        isInRole.Should().BeTrue();
+
+    }
+
+
+    [Fact()]
+    public void IsInRole_WithNoMatchingRole_ShouldReturnFalse()
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin, UserRoles.User], null, null);
+
+        // act
+
+        var isInRole = currentUser.IsInRole(UserRoles.Owner);
+
+        // assert
+
+        isInRole.Should().BeFalse();
+
+    }
+
+    [Fact()]
+    public void IsInRole_WithNoMatchingRoleCase_ShouldReturnFalse()
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin, UserRoles.User], null, null);
+
+        // act
+
+        var isInRole = currentUser.IsInRole(UserRoles.Admin.ToLower());
+
+        // assert
+
+        isInRole.Should().BeFalse();
+
+    }
+
+    [Fact]
+    public void IsInRole_WithNoRolesAssigned_ShouldReturnFalse()
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", Enumerable.Empty<string>(), null, null);
+
+        // act
+        var isInRole = currentUser.IsInRole(UserRoles.Admin);
+
+        // assert
+        isInRole.Should().BeFalse();
+    }
+    [Fact]
+    public void IsInRole_WithNullRole_ShouldReturnFalse()
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin, UserRoles.User], null, null);
+
+        // act
+        var isInRole = currentUser.IsInRole(null!);
+
+        // assert
+        isInRole.Should().BeFalse();
+    }
+
+    [Fact]
+    public void IsInRole_WithEmptyRole_ShouldReturnFalse()
+    {
+        // arrange
+        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin, UserRoles.User], null, null);
+
+        // act
+        var isInRole = currentUser.IsInRole("");
+
+        // assert
+        isInRole.Should().BeFalse();
+    }
+
+}
