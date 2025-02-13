@@ -189,6 +189,7 @@ FluentValidation.TestHelper – Validating request DTOs
 ❌ Name is too short → IsValid = false
 
 ❌ Address is missing → IsValid = false
+![image](https://github.com/user-attachments/assets/7de9c603-55af-4c5a-a38c-33f521a36cff)
 
 
  
